@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Hello } from './hello';
 
-export default class App extends React.Component{
+export default class App extends Component{
     //Do stuff
     
     //Render
