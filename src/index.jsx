@@ -141,7 +141,7 @@ export class TodoApp extends Component {
                 {/* Using for testing purpose - Main state */}
                 { console.log('this.props.todos', this.props.todos) }
 
-                <p>Todo list</p>
+                <p>To-Do list</p>
                 <input onKeyDown={(e)=>this.handleEnterKey(e)}
                     type="text" minLength="1" maxLength="50" placeholder="Enter your task"/>
 
