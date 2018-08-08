@@ -24,7 +24,7 @@ export class TodoList extends Component {
     }
 };
 
-export class DoneList extends React.Component{
+export class DoneList extends Component{
     render(){
         let arrTasks = this.props.items;
         if (arrTasks.length > 0)
