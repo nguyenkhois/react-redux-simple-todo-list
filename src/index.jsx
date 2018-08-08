@@ -8,10 +8,10 @@ import { TodoList, DoneList } from './list-render';
 
 /**
  * STEP 0 - STRUCTURES
- * For the main state object that is an object array
+ * 1/ The main STATE object that is an object array
  * let state = [{task1}, {task2}, {task3}, {taskn}];
  * 
- * For the action object
+ * 2/ The ACTION object must has @type property
  * let action = {
  *      type: 'YOUR_TYPE',
  *      task: { id: <task_id>,
@@ -19,7 +19,7 @@ import { TodoList, DoneList } from './list-render';
  *              isDone: <task_status:true/false> }
  * }
  * 
- * For a task (an item)
+ * 3/ A task is an object that is an action object property
  * let task = { id: <task_id>,
  *              description: <task_description>,
  *              isDone: <task_status:true/false> }
@@ -28,11 +28,12 @@ import { TodoList, DoneList } from './list-render';
 
 /**
  * STEP 1 - Creating reducer
- * Input: state, action 
- * Output: a new state
+ * Input: @state, @action 
+ * Output: a new @state
+ * Tip! View again step 0 to know about @state and @action structures
  */
 export let userReducer = (state, action) => {
-    state === undefined ? state = [] : null; // MAIN STATE
+    // state === undefined ? state = [] : null; // For testing purpose
 
     switch (action.type){
         case 'ADD_TASK':
@@ -57,13 +58,18 @@ export let userReducer = (state, action) => {
 
 /**
  * STEP 2 - Creating store
+ * View more about createStore() here:
+ * https://redux.js.org/api/createstore
+ * Tip! View again step 0 to know about @state structure
  */
-const store = createStore(userReducer);
+const preloadedState = []; // Initial main state value (Redux state)
+const store = createStore(userReducer, preloadedState);
 
 /**
- * STEP 3 - Creating Redux dispatchs (actions)
- * View again step 0 to understand a dispatch (action) structure
- * An action must has @type and @task
+ * STEP 3 - Creating actions (Redux dispatchs)
+ * View again step 0 to know about @action structure
+ * An @action must has @type
+ * Tip! View again step 0 to know about @action structure
  */
 const actionAddTask = (item) => ({ type: 'ADD_TASK', task: item });
 const actionRemoveTask = (item) => ({ type: 'REMOVE_TASK', task: item });
@@ -71,7 +77,7 @@ const actionChecked = (item) => ({ type: 'CHECKED', task: item });
 const actionRemoveCompleted = () => ({ type: 'REMOVE_COMPLETED' });
 
 /**
- * STEP 4A - Mapping all Redux dispatchs (actions) to React props
+ * STEP 4A - Mapping all actions (Redux dispatchs) to React props
  */
 const mapDispatchToProps = {
     actionAddTask,
@@ -82,7 +88,7 @@ const mapDispatchToProps = {
 
 /**
  * STEP 4B - Mapping Redux state to React props
- * Redux state is @state that is default
+ * Redux state is @state that is default name
  * React prop is @todos that you name it
  */
 const mapStateToProps = (state) => {
@@ -92,7 +98,7 @@ const mapStateToProps = (state) => {
 };
 
 /**
- * STEP 4C - Main class component
+ * STEP 4C - React class component
  */
 export class TodoApp extends Component {
     handleEnterKey = (e) => {
@@ -103,7 +109,7 @@ export class TodoApp extends Component {
                 description: userInput, 
                 isDone: false
             };
-            this.props.actionAddTask(newItem); // Using Redux dispatch on step 3
+            this.props.actionAddTask(newItem); // Using Redux dispatch that created on step 3
 
             e.target.value = ''; // Clear text input
         }
@@ -129,11 +135,11 @@ export class TodoApp extends Component {
     render(){
         let todoTasks = this.props.todos.filter((item) => !item.isDone);
         let doneTasks = this.props.todos.filter((item) => item.isDone);
+
         return(
             <div>
-                {   // Using for showing the main state
-                    console.log('this.props.todos', this.props.todos) 
-                }
+                {/* Using for testing purpose - Main state */}
+                { console.log('this.props.todos', this.props.todos) }
 
                 <p>Todo list</p>
                 <input onKeyDown={(e)=>this.handleEnterKey(e)}
@@ -153,7 +159,8 @@ export class TodoApp extends Component {
 };
 
 /**
- * STEP 5 - Creating connection to main class component
+ * STEP 5 - Creating connection to React class component
+ * Creating connection between Redux state and dispatchs with React class component
  */
 export const TodoX = connect(mapStateToProps, mapDispatchToProps)(TodoApp);
 
